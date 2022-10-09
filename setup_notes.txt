@@ -1,0 +1,25 @@
+
+1. Create Conda Env
+	$ conda create -n Opt2Q_py38 python=3.8.
+
+2. Install PySB\
+	$ conda install -n Opt2Q_py38 -c alubbock pysb\
+	$ conda install -n Opt2Q_py38 numba\
+	$ conda install -n Opt2Q_py38 numpy pandas cython matplotlib seaborn scipy scikit-learn 
+
+3. Pip install mord
+	$ conda activate Opt2Q_py38                                               
+	$ (Opt2Q_py38) which pip   
+		/Users/michaelirvin/miniconda3/envs/Opt2Q_py38/bin/pip\
+	$ pip install mord
+
+	# Install PyDREAM
+	$ pip install git+https://github.com/LoLab-VU/PyDREAM.git@fix_acceptance_rate_reporting\
+
+5. Install opt2q
+	$ git clone https://github.com/LoLab-VU/Opt2Q.git\
+	# Install conda-build
+	$ conda install conda-build
+	# Add Opt2Q to path
+	$ conda activate Opt2Q_py38
+	$ conda develop Opt2Q 
