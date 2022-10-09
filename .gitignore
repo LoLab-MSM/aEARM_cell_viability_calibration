@@ -1,0 +1,3 @@
+*.pyc
+*.DS_Store
+example/cell_viability/calibration_results
