@@ -8,6 +8,24 @@ import numpy as np
 from opt2q.measurement.base.functions import fast_linear_interpolate_fillna
 
 
+def half_maximal_point(x, wrt=0, atol=1e-8):
+    ll = []
+    for col in x.loc[:, ~x.columns.isin([wrt, 'simulation'])].columns:
+        # Get half max
+        half_max = min(x[col]) + (max(x[col]) - min(x[col]))/2
+
+        # get value of wrt at half max
+        list_wrt_at_half_max_zeros = get_val_of_wrt_at_xm(x, col, wrt, half_max, atol)
+
+        # convert to 1-row dataframe
+        half_max_data = [half_max]+list_wrt_at_half_max_zeros
+        half_max_cols = [f'{col}__half_max'] + \
+                        [f'{col}__half_max__t__{n}'for n, m in enumerate(list_wrt_at_half_max_zeros)]
+        ll.append(pd.DataFrame([half_max_data], columns=half_max_cols))
+
+    return pd.concat(ll, axis=1)
+
+
 def max_derivative(x, wrt=0, atol=1e-8):
     dx1 = derivative(x, wrt)
 
