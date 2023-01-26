@@ -25,6 +25,14 @@ def half_maximal_point(x, wrt=0, atol=1e-8):
 
     return pd.concat(ll, axis=1)
 
+def get_val_of_wrt_at_xm(x, col, wrt, xm, atol):
+    idx_nearest_to_xm = find_nearest(x[col], xm, atol)
+    x_xm = x[[col, wrt]].iloc[:-1].loc[idx_nearest_to_xm, :]
+    x_xm_nans = np.insert(x_xm.values, range(len(x_xm))[1::2], [xm, np.nan], 0)
+    interp_idx = np.argwhere(np.isnan(x_xm_nans))
+    wrt_at_xm_zeros = fast_linear_interpolate_fillna(x_xm_nans, interp_idx)[1::3, 1]
+    list_wrt_at_xm_zeros = list(wrt_at_xm_zeros)
+    return list_wrt_at_xm_zeros
 
 def max_derivative(x, wrt=0, atol=1e-8):
     dx1 = derivative(x, wrt)
@@ -56,6 +64,10 @@ def critical_points(x, wrt=0, atol=1e-8):
 
     return pd.concat(cp, axis=1)
 
+def find_nearest(array, value, atol):
+    array = np.asarray(array)
+    diff = array - value
+    return find_crosses_indices(diff, atol=atol)
 
 def relative_max_min_points(x, wrt=0, atol=1e-8):
     dx1 = derivative(x, wrt)
